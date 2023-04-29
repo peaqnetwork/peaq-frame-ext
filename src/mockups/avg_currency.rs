@@ -19,11 +19,11 @@ pub use pallet::*;
 pub mod pallet {
 
 	// use crate::types::BalanceOf;
-	use crate::averaging::ProvidesAverageFor;
+	use crate::averaging::*;
     use super::AverageSelector;
 	
 	use frame_support::{pallet_prelude::*, traits::Currency};
-    use sp_runtime::{Perbill, traits::Zero};
+    use sp_runtime::traits::Zero;
 
 	pub(crate) type BalanceOf<T> =
 		<<T as Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::Balance;
@@ -48,7 +48,7 @@ pub mod pallet {
 
 	#[pallet::genesis_config]
 	pub struct GenesisConfig<T: Config> {
-		avg_init: BalanceOf<T>,
+		pub avg_init: BalanceOf<T>,
 	}
 
 	// #[cfg(feature = "std")]
@@ -67,15 +67,33 @@ pub mod pallet {
 
 
 	impl<T: Config> Pallet<T> {
-		pub fn update(next_avg: BalanceOf<T>) {
+		pub fn update(next_avg: BalanceOf<T>, f: impl Fn(BalanceOf<T>) -> BalanceOf<T>) {
 			Average::<T>::mutate(|avg| {
-				*avg = Perbill::from_percent(50) * (*avg + next_avg);
+				*avg = f(next_avg);
 			});
+		}
+	}
+
+	impl<T: Config> ProvidesAverage<BalanceOf<T>> for Pallet<T> {
+		fn get_average() -> BalanceOf<T> {
+			Average::<T>::get()
+		}
+	}
+
+	impl<T: Config> ProvidesAverages<BalanceOf<T>, AverageSelector> for Pallet<T> {
+		fn get_average_by(_s: AverageSelector) -> BalanceOf<T> {
+			Average::<T>::get()
 		}
 	}
 
 	impl<T: Config> ProvidesAverageFor<BalanceOf<T>, AverageSelector> for Pallet<T> {
 		fn get_average_for(_r: AverageSelector) -> BalanceOf<T> {
+			Average::<T>::get()
+		}
+	}
+
+	impl<T: Config> ProvidesAveragesFor<BalanceOf<T>, AverageSelector, AverageSelector> for Pallet<T> {
+		fn get_average_for_by(_s: AverageSelector, _r: AverageSelector) -> BalanceOf<T> {
 			Average::<T>::get()
 		}
 	}
