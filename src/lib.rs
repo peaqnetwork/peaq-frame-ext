@@ -2,7 +2,8 @@
 //! We seperate definitions and implementations, that are very generic for substrate-pallets out into
 //! this crate. In case someone in the open-source-world wants to use some of our pallets, that depend
 //! on this crate's trait definitions, you only have to import this crate and not other parts from the
-//! peaq-network-node.
+//! peaq-network-node. The main goal of this crate is independence by using loose coupling of pallets
+//! and very generic reusable implementations.
 //! 
 //! ### Features
 //! 

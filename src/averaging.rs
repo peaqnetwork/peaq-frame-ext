@@ -14,10 +14,10 @@
 //! provides such an approximation/estimation of an average-value can be marked by the following
 //! trait definitions.
 //! 
-//! By using these traits, you can connect pallets together, without using a direct coupling
+//! By using these traits, you can connect pallets together, without using a tight coupling
 //! of those pallets. Pallets, which are using these trait definitions can easily be exchanged,
 //! only by switching them in the runtime-implementation, and without modifying or adapting
-//! the existing/remaining ones in the runtime.
+//! the existing/remaining ones in the runtime. The keyword here is loose coupling.
 //! 
 //! ## Abstract Trait Design
 //! 
