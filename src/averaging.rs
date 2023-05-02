@@ -40,7 +40,7 @@
 //!    
 //!    The pallet, that needs the average-value (in this example currency), needs another entry
 //!    within its Config-trait:
-//!    ```
+//!    ```ignore
 //!    type AvgRewardProvider: ProvidesAverageFor<Self::Currency>;
 //!    ```
 //! 
