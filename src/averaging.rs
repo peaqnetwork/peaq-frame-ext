@@ -1,4 +1,5 @@
-//! This module containes trait definitions and implementations to describe the averaging.
+//! This module contains trait definitions to describe the availability of an/a average/mean-value
+//! of a data series provided/needed by a substrate-pallet.
 //! 
 //! # Averaging
 //! 
@@ -34,8 +35,14 @@
 //! 
 //! ## Example Situations
 //! 
-//! 1. The pallet/object will provide just one single average-value, that does not depend on any
+//! 1. The pallet will provide just one single average-value, that does not depend on any
 //!    recipient, just implement `ProvidesAverage<T>` for your pallet/object.
+//!    
+//!    The pallet, that needs the average-value (in this example currency), needs another entry
+//!    within its Config-trait:
+//!    ```
+//!    type AvgRewardProvider: ProvidesAverageFor<Self::Currency>;
+//!    ```
 //! 
 //! 2. The pallet/object will provide multiple average-values with same return type, define some
 //!    selector-type, that is suitable for you and implement the `ProvidesAverages<T, S>`:
