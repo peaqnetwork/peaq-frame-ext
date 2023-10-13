@@ -17,5 +17,5 @@
 
 pub mod averaging;
 
-#[cfg(any(feature = "mockup-avg-currency"))]
+#[cfg(feature = "mockup-avg-currency")]
 pub mod mockups;
