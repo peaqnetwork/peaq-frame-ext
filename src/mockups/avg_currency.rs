@@ -15,14 +15,13 @@ pub use pallet::*;
 #[frame_support::pallet]
 pub mod pallet {
 
-    // use crate::types::BalanceOf;
-    use super::AverageSelector;
-    use crate::averaging::*;
-
     use frame_support::{pallet_prelude::*, traits::Currency};
     use sp_runtime::traits::Zero;
 
-    pub(crate) type BalanceOf<T> =
+    use crate::averaging::*;
+    use super::AverageSelector;
+
+    pub type BalanceOf<T> =
         <<T as Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::Balance;
 
     #[pallet::pallet]
@@ -30,6 +29,9 @@ pub mod pallet {
 
     #[pallet::config]
     pub trait Config: frame_system::Config {
+        /// Constant vector with OnAverageUpdate implementations to be updated.
+        type AvgChangedNotifier: AvgChangedNotifier;
+        /// Type of used currency.
         type Currency: Currency<Self::AccountId>;
     }
 
@@ -59,10 +61,16 @@ pub mod pallet {
     }
 
     impl<T: Config> Pallet<T> {
+        /// Update the internal average-value for testing purposes.
         pub fn update(next_avg: BalanceOf<T>, f: impl Fn(BalanceOf<T>) -> BalanceOf<T>) {
             Average::<T>::mutate(|avg| {
                 *avg = f(next_avg);
             });
+        }
+
+        /// Pass through method to simplify testing with your own implementations.
+        pub fn update_clients() {
+            T::AvgChangedNotifier::notify_clients();
         }
     }
 

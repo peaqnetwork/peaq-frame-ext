@@ -91,3 +91,26 @@ pub trait ProvidesAveragesFor<T, S, R> {
     /// Getter method with selector between different average-values and selector for recipient.
     fn get_average_for_by(sel: S, rec: R) -> T;
 }
+
+/// Hook trait for informing recipients, that an average value got updated.
+pub trait OnAverageChange {
+    /// The implementation is yours, it will be called by the average provider, when an average
+    /// value got updated.
+    fn on_update();
+}
+
+/// Hook trait for informing recipients, that an average value got updated. In this variant
+/// different average values can be provided. Therefor the hook functions have to pass the selector
+/// type about which of the values was the right one.
+pub trait OnAveragesChange<S> {
+    /// The implementation is yours, it will be called by the average provider, when an average
+    /// value got updated. The parameter `sel` tells you, which value got updated.
+    fn on_update(sel: S);
+}
+
+/// An implementation, that updates all clients that are requesting average values by using one of
+/// the traits `ProvidesAverage`, `ProvidesAverages`, `ProvidesAverageFor`, or
+/// `ProvidesAveragesFor` - and, which also implements `OnAverageUpdate` or `OnAveragesUpdate`.
+pub trait AvgChangedNotifier {
+    fn notify_clients();
+}
