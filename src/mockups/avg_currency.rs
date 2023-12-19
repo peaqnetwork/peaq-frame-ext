@@ -69,7 +69,7 @@ pub mod pallet {
         }
 
         /// Pass through method to simplify testing with your own implementations.
-        pub fn update_clients() {
+        pub fn notify_clients() {
             T::AvgChangedNotifier::notify_clients();
         }
     }

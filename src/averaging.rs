@@ -96,7 +96,7 @@ pub trait ProvidesAveragesFor<T, S, R> {
 pub trait OnAverageChange {
     /// The implementation is yours, it will be called by the average provider, when an average
     /// value got updated.
-    fn on_update();
+    fn on_change();
 }
 
 /// Hook trait for informing recipients, that an average value got updated. In this variant
